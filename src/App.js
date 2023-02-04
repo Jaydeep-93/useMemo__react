@@ -4,14 +4,23 @@ import './style.css';
 export default function App() {
   const [counter, setCounter] = useState(0);
   const [theme, setTheme] = useState('light');
+
   function slowFunction(num) {
     console.log('This is large function');
     for (let i = 0; i < 1000000000; i++) {}
     return num * 2;
   }
+
+  // used memo here if counter value changes then and only then this function will run
+  // if value of counter does not change then previously calculated value will be used and
+  // function will not re-run again and again
   const doubleNumber = useMemo(() => {
-    return slowFunction(counter)
-  },[counter]);
+    return slowFunction(counter);
+  }, [counter]);
+
+  // so generally useMemo is used on heavy function to avoid computation
+  // but useMemo has its own memory overhead so avoid using useMemo
+
   useEffect(() => {
     console.log('counter or theme updated');
   }, [counter, theme]);
